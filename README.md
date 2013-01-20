@@ -14,7 +14,7 @@ arch：pacman -S gvim git ctags
 arch用户可以直接yaourt -S vim-powerline这个就是老版本；   
 如果用vundle，我已经加在vimrc里了，需要你自己手动下载过去的版本然后解压到~/.vim/bundle，如果已有的插件，安装会跳过的。   
 PS我增加了一个powerlinelegacy，应该没啥问题了～～直接用vimrc就行。   
-再PS如果想折腾新版的powerline，arch用户只需yaourt -S powerline-git就可以了，接下来是去用Lokaltog/powerline上去找他的fontpatch.py来处理一下自己需要的字体，设置到gvim就好。   
+再PS如果想折腾新版的powerline，arch用户只需yaourt -S powerline-git就可以了，接下来是去用Lokaltog/powerline上去找他的fontpatcher.py来处理一下自己需要的字体，设置到gvim就好。   
 
 --langdef=latex   
 --langmap=latex:.tex   
