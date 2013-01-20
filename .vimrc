@@ -1,4 +1,4 @@
-" Setting up Vundle - the vim plugin bundler
+" vundle设置
 let iCanHazVundle=1
 let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
 if !filereadable(vundle_readme)
@@ -9,32 +9,27 @@ if !filereadable(vundle_readme)
     let iCanHazVundle=0
 endif
 
-" required for vundle
 filetype off
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
-" let Vundle manage Vundle
-" required!
+" 各种插件
 Bundle 'gmarik/vundle'
 
 " Bundles from GitHub repos:
 
-" Class/module browser
+" tagbar
 Bundle 'majutsushi/tagbar'
-" Code and files fuzzy finder
+" powerline——这个要安装老版本，新版本中文硬伤
+Bundle 'Lokaltog/powerline'
+" 模糊搜索
 Bundle 'kien/ctrlp.vim'
-" Git integration
+" Git 集成 :help git
 Bundle 'motemen/git-vim'
-" Powerline
-Bundle 'Lokaltog/vim-powerline'
-" Consoles as buffers
-Bundle 'rosenfeld/conque-term'
-" Pending tasks list
+" tasks list
 Bundle 'fisadev/FixedTaskList.vim'
-" Python mode (indentation, doc, refactor, lints, code checking, motion and
-" operators, highlighting, run and ipdb breakpoints)
+" python mode
 Bundle 'klen/python-mode'
 " flake8
 Bundle 'nvie/vim-flake8'
@@ -55,7 +50,7 @@ Bundle 'Wombat'
 " Autocompletion inside search
 Bundle 'SearchComplete'
 
-" Installing plugins the first time
+" 首次运行，如果你没有~/.vim文件夹的话。
 if iCanHazVundle == 0
     echo "Installing Bundles, please ignore key map error messages"
     echo ""
@@ -279,7 +274,9 @@ let g:neocomplcache_min_syntax_length = 3
 let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 " 上面照搬官网，下面这条是关闭自动提示，只用neocomplcache生成cache，supertab进行补全
 let g:neocomplcache_disable_auto_complete = 1
- 
+
+" powerline 设置
+let g:Powerline_symbols = 'unicode'
  
 " 启用omni补全
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
