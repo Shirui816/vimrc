@@ -21,8 +21,9 @@ Bundle 'gmarik/vundle'
 
 " tagbar
 Bundle 'majutsushi/tagbar'
-" powerline——这个要安装老版本，新版本中文硬伤
-Bundle 'Lokaltog/powerline'
+" powerline——这个要安装老版本，新版本中文有点麻烦，所以我弄了一个legacy
+" Bundle 'Lokaltog/powerline'
+Bundle 'Shirui1989/powerlinelegacy'
 " 模糊搜索
 Bundle 'kien/ctrlp.vim'
 " Git 集成 :help git
