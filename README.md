@@ -1,5 +1,5 @@
-先安装pip
-sudo apt-get pip
+先安装pip \\
+sudo apt-get pip \\
 或在软件管理中心搜索pip
 然后 sudo pip install dbgp pep8 flake8 pyflakes 
 安装 ctags git 和 vim/gvim .
