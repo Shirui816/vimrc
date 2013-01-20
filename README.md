@@ -1,8 +1,13 @@
 先安装pip   
-sudo apt-get pip   
-或在软件管理中心搜索pip   
-然后 sudo pip install dbgp pep8 flake8 pyflakes    
-安装 ctags git 和 vim/gvim .   
+arch：pacman -S python-pip   
+ubuntu：apt-get install pip    
+然后   
+
+sudo pip install dbgp pep8 flake8 pyflakes    
+
+安装 ctags git 和 vim/gvim .
+ubuntu：apt-get install gvim exuberant-ctags git   
+arch：pacman -S gvim git ctags   
 启动vim，如果你没有~/.vim文件夹，那么一切会自动运行   
 把下面东西加入到~/.ctags   
 
