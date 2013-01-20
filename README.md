@@ -1,9 +1,10 @@
-Please install pip first:
-sudo apt-get pip or search pip in your software center .
-Then sudo pip install dbgp pep8 flake8 pyflakes 
-Install gvim, ctags and git, you may search them in your software center .
-Launch vim, press <ESC> then type :BundleInstall .
-Add this in your ~/.ctags file :
+先安装pip
+sudo apt-get pip
+或在软件管理中心搜索pip
+然后 sudo pip install dbgp pep8 flake8 pyflakes 
+安装 ctags git 和 vim/gvim .
+启动vim，如果你没有~/.vim文件夹，那么一切会自动运行
+把下面东西加入到~/.ctags
 
 
 --langdef=latex
