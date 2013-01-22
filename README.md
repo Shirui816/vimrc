@@ -22,7 +22,7 @@ PS我增加了一个powerlinelegacy，应该没啥问题了～～直接用vimrc�
 Ctags设置
 ---------
 把下面东西加入到~/.ctags   
->
+
 --langdef=latex   
 --langmap=latex:.tex   
 --regex-latex=/^\\tableofcontents/TABLE OF CONTENTS/s,toc/   
@@ -45,4 +45,3 @@ Ctags设置
 --regex-latex=/\\label[[:space:]]*\{([^}]+)\}/\1/l,label/   
 --regex-latex=/\\ref[[:space:]]*\{([^}]+)\}/\1/r,ref/   
 --regex-latex=/\\pageref[[:space:]]*\{([^}]+)\}/\1/p,pageref/
->
