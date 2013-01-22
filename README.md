@@ -1,14 +1,17 @@
-先安装pip   
-arch：pacman -S python-pip   
-ubuntu：apt-get install pip    
+Vim设置
+=======
+安装pip   
+-------
+arch：```pacman -S python-pip```   
+ubuntu：```apt-get install pip```    
 然后   
-sudo pip install dbgp pep8 flake8 pyflakes    
+```sudo pip install dbgp pep8 flake8 pyflakes```    
 
-安装 ctags git 和 vim/gvim .
-ubuntu：apt-get install gvim exuberant-ctags git   
-arch：pacman -S gvim git ctags   
+安装 ctags git 和 vim/gvim
+--------------------------
+ubuntu：```apt-get install gvim exuberant-ctags git```   
+arch：```pacman -S gvim git ctags```   
 启动vim，如果你没有~/.vim文件夹，那么一切会自动运行   
-把下面东西加入到~/.ctags   
 
 关于powerline插件：由于更新，新版本符号显示是乱码，而且配置、安装都很麻烦，所以暂时用老版本：   
 arch用户可以直接yaourt -S vim-powerline这个就是老版本；   
@@ -16,6 +19,10 @@ arch用户可以直接yaourt -S vim-powerline这个就是老版本；
 PS我增加了一个powerlinelegacy，应该没啥问题了～～直接用vimrc就行。   
 再PS如果想折腾新版的powerline，arch用户只需yaourt -S powerline-git就可以了，接下来是去用Lokaltog/powerline上去找他的fontpatcher.py来处理一下自己需要的字体，设置到gvim就好。   
 
+Ctags设置
+---------
+把下面东西加入到~/.ctags   
+>
 --langdef=latex   
 --langmap=latex:.tex   
 --regex-latex=/^\\tableofcontents/TABLE OF CONTENTS/s,toc/   
@@ -38,3 +45,4 @@ PS我增加了一个powerlinelegacy，应该没啥问题了～～直接用vimrc�
 --regex-latex=/\\label[[:space:]]*\{([^}]+)\}/\1/l,label/   
 --regex-latex=/\\ref[[:space:]]*\{([^}]+)\}/\1/r,ref/   
 --regex-latex=/\\pageref[[:space:]]*\{([^}]+)\}/\1/p,pageref/
+>
