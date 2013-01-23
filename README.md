@@ -18,11 +18,13 @@ ubuntu：```apt-get install gvim exuberant-ctags git```
 arch：```pacman -S gvim git ctags```   
 启动vim，如果你没有~/.vim文件夹，那么一切会自动运行。   
 
-关于powerline插件，由于它的更新，使安装过程麻烦了一些，按照官方的介绍它成了python的一个模块，配置起来也不一样了，而且字体问题现在还比较麻烦。所以我设置了一个powerlinelegacy，可以直接用Bunlde，这点我已经配置好了。   
+新版的powerline-vim已经出来了，我加入了bundle，唯一麻烦的是他需要他的for powerline的字体，这个官方给出的字体不太好用，我给terminus字体打了一个补丁，请移动到~/.fonts文件夹内然后`fc-cache -fv`刷新缓存。    
 
 PS它的新版各位也可以去看看，貌似修改为Python以后bash也可以用powerline风格的prompt，支持更广，设置也更麻烦～   
 
-[Powerline Git，各位可以去看看](https://github.com/Lokaltog/powerline)
+[Powerline Git，各位可以去看看，这里有字体补丁～你可以使用自己喜欢的字体。](https://github.com/Lokaltog/powerline)
+
+新版的
 
 Ctags设置
 ---------
