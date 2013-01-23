@@ -21,7 +21,8 @@ arch：```pacman -S gvim git ctags```
 关于powerline插件，由于它的更新，使安装过程麻烦了一些，按照官方的介绍它成了python的一个模块，配置起来也不一样了，而且字体问题现在还比较麻烦。所以我设置了一个powerlinelegacy，可以直接用Bunlde，这点我已经配置好了。   
 
 PS它的新版各位也可以去看看，貌似修改为Python以后bash也可以用powerline风格的prompt，支持更广，设置也更麻烦～   
-[Powerline Git](https://github.com/Lokaltog/powerline)
+
+[Powerline Git，各位可以去看看](https://github.com/Lokaltog/powerline)
 
 Ctags设置
 ---------
