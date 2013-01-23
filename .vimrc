@@ -8,7 +8,7 @@ if !filereadable(vundle_readme)
     silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
     let iCanHazVundle=0
 endif
-
+set nocompatible
 filetype off
 
 set rtp+=~/.vim/bundle/vundle/
