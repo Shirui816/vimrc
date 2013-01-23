@@ -100,7 +100,7 @@ set ls=2
 set encoding=utf-8
 set fileencodings=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936,iso-8859-6
 set ambiwidth=double
-set guifont=Consolas\ Regular\ 16
+set guifont=Terminus\ (TTF)\ for\ Powerline\ Medium\ 16 " 打过补丁的字体
  
 "打开文件时，总是跳到退出之前的光标处
 autocmd BufReadPost *
