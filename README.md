@@ -18,7 +18,7 @@ ubuntu：```apt-get install gvim exuberant-ctags git```
 arch：```pacman -S gvim git ctags```   
 启动vim，如果你没有~/.vim文件夹，那么一切会自动运行。   
 
-新版的powerline-vim已经出来了，我加入了bundle，唯一麻烦的是他需要他的for powerline的字体，这个官方给出的字体不太好用，我给terminus字体打了一个补丁，请移动到~/.fonts文件夹内然后`fc-cache -fv`刷新缓存。    
+新版的powerline-vim已经出来了，我加入了bundle，唯一麻烦的是他需要他的for powerline的字体，这个官方给出的字体不太好用，我给terminus字体打了一个补丁，请移动到`~/.fonts/`文件夹内然后`fc-cache -fv`刷新缓存。    
 
 PS它的新版各位也可以去看看，貌似修改为Python以后bash也可以用powerline风格的prompt，支持更广，设置也更麻烦～   
 
@@ -51,3 +51,10 @@ Ctags关于LaTeX的设置
 --regex-latex=/\\label[[:space:]]*\{([^}]+)\}/\1/l,label/   
 --regex-latex=/\\ref[[:space:]]*\{([^}]+)\}/\1/r,ref/   
 --regex-latex=/\\pageref[[:space:]]*\{([^}]+)\}/\1/p,pageref/
+
+Patcher用法
+-----------
+```
+fontpatcher.py font-name.ttf
+```
+然后将生成的字体移动到`~/.fonts/`里面，`fc-cache -fv`刷新缓存。
