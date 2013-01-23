@@ -10,8 +10,7 @@ Bundle 'vim-scripts/SuperTab'
 -------
 arch：```pacman -S python-pip```   
 ubuntu：```apt-get install pip```    
-然后   
-```sudo pip install dbgp pep8 flake8 pyflakes```    
+然后```sudo pip install dbgp pep8 flake8 pyflakes```    
 
 安装 ctags git 和 vim/gvim
 --------------------------
