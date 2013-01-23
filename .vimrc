@@ -10,7 +10,7 @@ if !filereadable(vundle_readme)
 endif
 set nocompatible
 filetype off
-
+set shell=/bin/bash " 不用bash的同学，一定要注意，我用fish就一直悲剧……要加入这行的。
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
