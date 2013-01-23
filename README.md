@@ -1,8 +1,10 @@
 Vim设置
 =======
 **很重要的一点：我的vim-latexsuite和vim-supertab是我用pacman安装的（我用arch），如果你的源里没有这两个插件请自行在vimrc里添加相对应的Bundle：    
+```
 Bundle 'vim-scripts/LaTeX-Suite-aka-Vim-LaTeX'    
-Bundle 'vim-scripts/SuperTab'**
+Bundle 'vim-scripts/SuperTab'
+```**
 
 安装pip   
 -------
