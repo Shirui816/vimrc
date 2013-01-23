@@ -24,10 +24,9 @@ PS它的新版各位也可以去看看，貌似修改为Python以后bash也可�
 
 [Powerline Git，各位可以去看看，这里有字体补丁～你可以使用自己喜欢的字体。](https://github.com/Lokaltog/powerline)
 
-新版的
 
-Ctags设置
----------
+Ctags关于LaTeX的设置
+--------------------
 把下面东西加入到~/.ctags   
 
 --langdef=latex   
