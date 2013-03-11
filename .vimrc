@@ -21,10 +21,9 @@ Bundle 'gmarik/vundle'
 
 " tagbar
 Bundle 'majutsushi/tagbar'
-" powerline——这个要安装老版本，新版本中文有点麻烦，所以我弄了一个legacy
-" Bundle 'Lokaltog/powerline'
-" Bundle 'Shirui816/powerlinelegacy'
-Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'} " 新版powerline-vim，需要字体。
+" powerline
+Bundle 'Lokaltog/powerline'
+" Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'} " 新版powerline-vim，需要字体。
 " 模糊搜索
 Bundle 'kien/ctrlp.vim'
 " Git 集成 :help git
@@ -278,7 +277,7 @@ let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 let g:neocomplcache_disable_auto_complete = 1
 
 " powerline 设置
-let g:Powerline_symbols = 'unicode'
+let g:Powerline_symbols = 'fancy'
  
 " 启用omni补全
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
