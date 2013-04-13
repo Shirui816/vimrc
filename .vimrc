@@ -73,7 +73,7 @@ set wrap
 set nocp "设置不兼容模式
 syntax on "打开语法高亮
 if has("gui_running")
-    set guioptions-=T "关闭工具栏
+	set guioptions-=T "关闭工具栏
 	colorscheme wombat "载入色彩方案
 else
 	set background=dark
@@ -381,11 +381,7 @@ function! EqualSign(char)
     endif
     if ex1 =~ "[-=+><>\/\*!]"
       if ex2 =~ "\<SPACE>"
-        if getline('.')[col('.')] !~ "\<SPACE>"
-          return "\<ESC>i".a:char."\<ESC>la"
-        else
-          return "\<ESC>xa".a:char."\<SPACE>"
-        endif
+        return "\<ESC>i".a:char."\<ESC>la"
       else
         return "\<SPACE>".a:char."\<SPACE>"
       endif 
@@ -548,11 +544,7 @@ function EqualChar(char)
   endif
   if ex1 =~ "[-=+><>\/\*!]"
     if ex2 =~ "\<SPACE>"
-      if getline('.')[col('.')] !~ "\<SPACE>"
-        return "\<ESC>i".a:char."\<ESC>la"
-      else
-        return "\<ESC>xa".a:char."\<SPACE>"
-      endif
+      return "\<ESC>i".a:char."\<ESC>la"
     else
       return "\<SPACE>".a:char."\<SPACE>"
     endif 
