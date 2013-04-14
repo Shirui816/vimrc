@@ -334,7 +334,7 @@ autocmd FileType python inoremap * <c-r>=EqualSign('*')<CR>
 autocmd FileType python inoremap < <c-r>=EqualSign('<')<CR>
 autocmd FileType python inoremap > <c-r>=EqualSign('>')<CR>
 autocmd FileType python inoremap : <c-r>=Swap()<CR>
-inoremap , ,<SPACE>
+autocmd FileType python inoremap , ,<SPACE>
 inoremap ; ;<SPACE>
 "autocmd FileType python inoremap . .<SPACE>
 
@@ -529,6 +529,7 @@ autocmd FileType fortran inoremap = <c-r>=EqualChar("=")<CR>
 autocmd FileType fortran inoremap + <c-r>=EqualChar("+")<CR>
 autocmd FileType fortran inoremap - <c-r>=EqualChar("-")<CR>
 "autocmd FileType fortran inoremap ! <c-r>=EqualChar("!")<CR>
+autocmd FileType fortran inoremap , <c-r>=Coma()<CR>
 function EqualChar(char)
   if a:char =~ "*" && getline('.')[col('.') - 2] =~ "("
     return a:char
@@ -553,6 +554,13 @@ function EqualChar(char)
   endif
 endfunction
 
+function Coma()
+  if getline('.')[col('.') - 3] =~ "*"
+    return "\<ESC>i,\<ESC>la"
+  else
+    return ", "
+  endif
+endfunction
 
 """""""""""""""""""""""""""""""""
 "              EOF              "
