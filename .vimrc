@@ -1,161 +1,149 @@
-
-" Setting up Vundle - the vim plugin bundler
+" Bundle settings
 let iCanHazVundle=1
 let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
 if !filereadable(vundle_readme)
-    echo "Installing Vundle..."
-    echo ""
-    silent !mkdir -p ~/.vim/bundle
-    silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
-    let iCanHazVundle=0
+  echo "Installing Vundle..."
+  echo ""
+  silent !mkdir -p ~/.vim/bundle
+  silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
+  let iCanHazVundle=0
 endif
+
 set shell=/bin/bash
-" required for vundle
+" Other shells like fish may report an error.
+
 filetype off
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
-" let Vundle manage Vundle
-" required!
+" Bundle list
+Bundle 'Lokaltog/powerline'
 Bundle 'gmarik/vundle'
-
-" Bundles from GitHub repos:
-" Class/module browser
+Bundle 'godlygeek/tabular'
+Bundle 'terryma/vim-multiple-cursors'
+Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'majutsushi/tagbar'
-Bundle 'VimIM'
-" Code and files fuzzy finder
 Bundle 'kien/ctrlp.vim'
-" Git integration
-Bundle 'motemen/git-vim'
-" Powerline
-Bundle 'Lokaltog/vim-powerline'
-let g:Powerline_symbols = 'fancy'
-" Terminal Vim with 256 colors colorscheme
 Bundle 'fisadev/fisa-vim-colorscheme'
-" Pending tasks list
 Bundle 'fisadev/FixedTaskList.vim'
-" Python mode (indentation, doc, refactor, lints, code checking, motion and
-" operators, highlighting, run and ipdb breakpoints)
-" Bundle 'klen/python-mode'
-" neocomplcache
 Bundle 'Shougo/neocomplcache'
-" vim-latex-box
 Bundle 'LaTeX-Box-Team/LaTeX-Box'
-" vim-flake8
 Bundle 'nvie/vim-flake8'
-
-" Bundles from vim-scripts repos
-
-" Python code checker
 Bundle 'pyflakes.vim'
-" Search results counter
 Bundle 'IndexedSearch'
-" XML/HTML tags navigation
 Bundle 'matchit.zip'
-" Gvim colorscheme
 Bundle 'Wombat'
-" Autocompletion inside search
 Bundle 'SearchComplete'
+
 " Installing plugins the first time
 if iCanHazVundle == 0
-    echo "Installing Bundles, please ignore key map error messages"
-    echo ""
-    :BundleInstall
+  echo "Installing Bundles, please ignore key map error messages"
+  echo ""
+  :BundleInstall
 endif
 
 
 """""""""""""""""""""""""""""""""
-"           通用配置            "
+"           General             "
 """""""""""""""""""""""""""""""""
 set langmenu=zh_CN
 set wrap
-set nocp "设置不兼容模式
-syntax on "打开语法高亮
+set nocp
+syntax on
 if has("gui_running")
-	set guioptions-=T "关闭工具栏
-	colorscheme wombat "载入色彩方案
+  set guioptions-=T
+  colorscheme wombat
 else
-	set background=dark
-	colorscheme zellner
+  set background=dark
+  colorscheme zellner
 endif
 
 " navigate windows with meta+arrows
-map <M-Right> <c-w>l
-map <M-Left> <c-w>h
-map <M-Up> <c-w>k
-map <M-Down> <c-w>j
 imap <M-Right> <ESC><c-w>l
 imap <M-Left> <ESC><c-w>h
 imap <M-Up> <ESC><c-w>k
 imap <M-Down> <ESC><c-w>j
 
-set mouse=a "设置鼠标支持
-set nobackup "取消自动备份
-setlocal noswapfile "不要生成swap文件
-set bufhidden=hide "当buffer被丢弃时隐藏
-set autoread "设置自动读取文件当外部文件被修改时
-set showcmd "设置显示未完成的命令
-set autoindent "设置自动缩进
-set sessionoptions+=resize "保存窗口大小
-set scrolloff=7 "光标上下两侧最少保留的屏幕行数
-set cmdheight=2 "设置命令行高度为2行
+set mouse=a
+set nobackup
+setlocal noswapfile
+set bufhidden=hide
+set autoread
+set showcmd
+set autoindent
+set sessionoptions+=resize
+set scrolloff=7
+set cmdheight=2
 set ls=2
 
-" 设置中文支持
+" Chinese support
 set encoding=utf-8
 set fileencodings=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936,iso-8859-6
 set ambiwidth=double
 set guifont=Terminus\ for\ Powerline\ Medium\ 16
 
-"打开文件时，总是跳到退出之前的光标处
+" Cursor jumps to the last place while openning file
 autocmd BufReadPost *
-	\ if line("'\"") > 0 && line("'\"") <= line("$") |
-	\ exe "normal! g`\"" |
-	\ endif
+  \ if line("'\"") > 0 && line("'\"") <= line("$") |
+  \ exe "normal! g`\"" |
+  \ endif
 
-"反显光标当前行颜色
+" Reverse color of current cursor
 if has("gui_running")
-	set cursorline
-	hi cursorline guibg=#333333
+  set cursorline
+  hi cursorline guibg=#333333
 endif
 
 let mapleader=','
-"设置高亮搜索、输入字符串就显示匹配点
-set hlsearch "搜索出之后高亮关键词
-set incsearch "搜索时高亮关键词
-set ignorecase "搜索时忽略大小写
-nmap <silent> <leader><cr> :noh<cr> "快速清除高亮搜索
 
-"关于标签的快捷键
-map <leader>tn :tabnew%<cr> "将当前内容在新标签中打开
-map <leader>te :tabedit<cr> "打开空白新标签
-map <leader>tm :tabmove
-"移动当前标签,使用方法为
-":tabmove [N]把当前标签页移到第N个标签页之后.
-"用0使用当前标签页成为首个标签页.如果没有N,
-"当前标签页成为最后一个.
+" Searching settings
+set hlsearch
+set incsearch
+set ignorecase
+nmap <silent> <leader><cr> :noh<cr>
 
-set number "设置显示行号
+set number " Show line number
 set expandtab
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set wildmenu "命令行补全
-set showmatch "插入括号时短暂跳转到匹配的对应括号
-set matchtime=2 "跳转到匹配括号的时间
-filetype plugin on "允许使用ftplugin目录下的文件类型特定脚本
-filetype indent on "允许使用indent目录下的文件类型缩进
+set wildmenu " Complete command
+set showmatch " Jump to the related parenthesses shortly
+set matchtime=2 " Time above
+set smarttab
+filetype plugin on
+filetype indent on
 
-"设置以缩进的方式自动折叠和设置快捷方式
+" foldmethod and F5(F6) to fold(unfold) code
 set foldmethod=indent
-"map <F3> zO "打开折叠
-"map <F4> zC "关闭折叠
-map <F5> zR "打开所有折叠
-map <F6> zM "关闭所有折叠
+autocmd FileType fortran set foldmethod=syntax
+map <F5> zR
+map <F6> zM
+
+" close pair
+:inoremap ( ()<ESC>i
+:inoremap ) <c-r>=ClosePair(')')<CR>
+:inoremap { {}<ESC>i
+:inoremap } <c-r>=ClosePair('}')<CR>
+:inoremap [ []<ESC>i
+:inoremap ] <c-r>=ClosePair(']')<CR>
+:inoremap " ""<ESC>i
+
+function! ClosePair(char)
+  if getline('.')[col('.') - 1] == a:char
+    return "\<Right>"
+  else
+    return a:char
+  endif
+endfunction
+
+"""""""""""""""""""""""""""
+" End of general settings "
+"""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""
-"           插件设置            "
+"           Plugins             "
 """""""""""""""""""""""""""""""""
 " vim-latexsuite                "
 " vim-neocomplcache             "
@@ -163,60 +151,60 @@ map <F6> zM "关闭所有折叠
 " vim-latex-box                 "
 " vim-tagbar                    "
 " vim-ctrlp                     "
-" vim-python-mode	            "
 " vim-flake8                    "
+" vim-indent-guide              "
 """""""""""""""""""""""""""""""""
-"上一个错误
+
+" Powerline
+set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+let g:Powerline_symbols="fancy"
+set laststatus=2
+set noshowmode
+
+" Former Error
 map <F3> :cn<Enter>
-"下一个错误
+" Next Error
 map <F4> :cp<Enter>
 
 """""""""""""""""
-"  tagbar 设置  "
+"  tagbar       "
 """""""""""""""""
-" 设置按键是F8
+" F8 Open tagbar
 map <F8> :TagbarToggle<CR>
-" 宽度
 let g:tagbar_width = 25
-" 放在左边
 let g:tagbar_left = 1
-" 打开后切换到tagbar
 let g:tagbar_autofocus = 1
 let g:tagbar_ctags_bin = "/usr/bin/ctags"
-" latex支持
+" latex support
 let g:tagbar_type_tex = {
-	    \ 'ctagstype' : 'latex',
-	    \ 'kinds'     : [
-	        \ 's:sections',
-	        \ 'g:graphics',
-	        \ 'l:labels',
-	        \ 'r:refs:1',
-	        \ 'p:pagerefs:1'
-	    \ ],
-	    \ 'sort'    : 0,
+     \ 'ctagstype' : 'latex',
+     \ 'kinds'     : [
+          \ 's:sections',
+          \ 'g:graphics',
+          \ 'l:labels',
+          \ 'r:refs:1',
+          \ 'p:pagerefs:1'
+      \ ],
+      \ 'sort'    : 0,
 \ }
 """""""""""""""""
 " End of tagbar "
 """""""""""""""""
 
 """"""""""""""""""""""
-" python mode        "
 " flake8             "
 " CtrlP              "
 """"""""""""""""""""""
-" 使用pylint
- autocmd FileType python map <buffer> <leader>9 :w<cr>:!pylint %<CR>
-" 使用flake8
- autocmd FileType python map <F7> :call Flake8()<CR>
-" C-Z退出当前窗口
- autocmd FileType python map <C-Z> <ESC>:q<CR>
-" flake8忽略错误
+" pylint
+autocmd FileType python map <buffer> <leader>9 :w<cr>:!pylint2 % \| less<CR>
+" flake8
+autocmd FileType python map <F7> :call Flake8()<CR>
+" C-Z quick current buffer
+autocmd FileType python map <C-Z> <ESC>:q<CR>
+" Ignore errors
 let g:flake8_ignore = "E501,E203"
-" 启用/不启用quickfix
+" Shut quickfix
 let g:pyflakes_use_quickfix = 0
-"let g:flake8_builtins = "_,apply"
-"let g:flake8_max_line_length = 99
-"let g:flake8_max_complexity = 10
 
 " CtrlP (new fuzzy finder)
 let g:ctrlp_map = ',e'
@@ -226,8 +214,8 @@ nmap ,f :CtrlPLine<CR>
 nmap ,m :CtrlPMRUFiles<CR>
 " 调用ctrlp时使用默认搜索文本
 function! CtrlPWithSearchText(search_text, ctrlp_command_end)
-    execute ':CtrlP' . a:ctrlp_command_end
-    call feedkeys(a:search_text)
+  execute ':CtrlP' . a:ctrlp_command_end
+  call feedkeys(a:search_text)
 endfunction
 " 带默认文本的ctrlp
 nmap ,wg :call CtrlPWithSearchText(expand('<cword>'), 'BufTag')<CR>
@@ -244,28 +232,9 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\.pyc$\|\.pyo$',
 \ }
 
-" python-mode 设置
-" 不必每次保存文件的时候显示lint信息
-" let g:pymode_lint_write = 0
-" pep8+pyflakes+pylint---<,8>运行
-" autocmd FileType python map <buffer> <leader>8 :PyLint<CR>
-" 错误容忍
-" let g:pymode_lint_ignore = "E501,W293,E203"
-" let g:pymode_lint_signs = 0
-" 打开python文件不折叠
-" let g:pymode_folding = 1
-" 默认不加载rope，想加载用1
-" let g:pymode_rope = 0 
-" python-mode的rope设定
-" nmap ,d :RopeGotoDefinition<CR>
-" nmap ,o :RopeFindOccurrences<CR>
-
 """"""""""""""""""""""""""
-"   End of Python mode   "
+" Neocomplcache settings "
 """"""""""""""""""""""""""
-
-
-" neocomplcache设置，摘自官网
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplcache.
@@ -279,54 +248,57 @@ let g:neocomplcache_enable_underbar_completion = 1
 " Set minimum syntax keyword length.
 let g:neocomplcache_min_syntax_length = 3
 let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
-" 上面照搬官网，下面这条是关闭自动提示，只用neocomplcache生成cache，supertab进行补全
+" Shut autostart
 let g:neocomplcache_disable_auto_complete = 1
 
 
-" 启用omni补全
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" omnicomplete
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+autocmd FileType c set omnifunc=ccomplete#Complete
 
-
-" Supertab设置
+" Supertab
 let g:SuperTabRetainCompletionType=2
 let g:SuperTabDefaultCompletionType="<C-X><C-U>"
 set ofu=syntaxcomplete#Complete
 set completeopt=menu,longest "不在补全的时候显示奇怪的窗口
 
 
-" vim-latexsuite设置
+" vim-latexsuite
 set grepprg=grep\ -nH\ $*
 let g:tex_flavor='latex'
-set sw=2
+autocmd FileType tex set sw=2
 set iskeyword+=:
 
+" vim-indent-guide
+autocmd FileType python set ts=4 sw=4 et
+autocmd FileType vim set ts=2 sw=2 et
+autocmd FileType fortran set ts=6 sw=6 et
+autocmd FileType html set ts=2 sw=2 et
+autocmd FileType css set ts=2 sw=2 et
+let g:indent_guides_start_level = 1
+autocmd FileType fortran let g:indent_guides_start_level = 2
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_auto_colors = 1
+let g:indent_guides_guide_size = 1
 
-" K 翻译当前单词
-" 设置vim字典翻译功能
+
+" K to translate
 set keywordprg=/home/shirui/Workspace/ydcv/ydcv.py
 
+""""""""""""""""""
+" End of Plugins "
+""""""""""""""""""
 
-" 设置( { [ < 自动配对和closepair函数
-:inoremap ( ()<ESC>i
-:inoremap ) <c-r>=ClosePair(')')<CR>
-:inoremap { {}<ESC>i
-:inoremap } <c-r>=ClosePair('}')<CR>
-:inoremap [ []<ESC>i
-:inoremap ] <c-r>=ClosePair(']')<CR>
-:inoremap " ""<ESC>i
-:inoremap ' ''<ESC>i
+"""""""""""""""""""
+" Python Settings "
+"""""""""""""""""""
 
-function! ClosePair(char)
-	if getline('.')[col('.') - 1] == a:char
-		return "\<Right>"
-	else
-		return a:char
-	endif
-endfunction
-
-" 设置运算符前后空格和+=等符号，只在python下有效
+" Equal sign for python
 autocmd FileType python inoremap = <c-r>=EqualSign('=')<CR>
 autocmd FileType python inoremap + <c-r>=EqualSign('+')<CR>
 autocmd FileType python inoremap - <c-r>=EqualSign('-')<CR>
@@ -335,68 +307,66 @@ autocmd FileType python inoremap < <c-r>=EqualSign('<')<CR>
 autocmd FileType python inoremap > <c-r>=EqualSign('>')<CR>
 autocmd FileType python inoremap : <c-r>=Swap()<CR>
 autocmd FileType python inoremap , ,<SPACE>
+autocmd FileType python inoremap ! <c-r>=EqualSign('!')<CR>
 inoremap ; ;<SPACE>
-"autocmd FileType python inoremap . .<SPACE>
-
 
 " Swap函数
 " (:)自动():
 " 且当:前是)时不空格，其余情况冒号前一个空格
 " 当一行有[]时间冒号不空格，应对[::]情况
 function! Swap()
-    if getline('.')[col('.') - 1] =~ ")" && getline('.')[col('.') - 2] =~ "("
-        return "\<ESC>la:"
+  if getline('.')[col('.') - 1] =~ ")" && getline('.')[col('.') - 2] =~ "("
+    return "\<ESC>la:"
+  else
+    if getline('.')[col('.') - 1] =~ "]"
+      return ":"
     else
-        if getline('.')[col('.') - 1] =~ "]"
-            return ":"
-        else
-            if getline('.')[col('.') - 2] =~ ")"
-                return ":"
-            else
-                return " :"
-            endif
-        endif
+      if getline('.')[col('.') - 2] =~ ")"
+        return ":"
+      else
+        return " :"
+      endif
     endif
+  endif
 endfunction
 
 
 " EqualSign函数
 " 当一行有[]时-不空格，应对[-1]情况
 " 实现运算符包括+=、*=前后空格
-" a + b情况可以在a +| b(|为光标所在)补输入符号比如=
+" a + b情况可以补输入符号比如=
+" a = b情况可以补输入符号如+
 function! EqualSign(char)
-    if a:char =~ "/" && getline('.') =~ "#"
-        return a:char
-    endif
-    if a:char =~ "=" && getline('.') =~ "[()]"
-        return a:char
-    endif
-    if a:char =~ "-" && getline('.') =~ "[\]()]"
-        return a:char
-    endif 
-    let ex1 = getline('.')[col('.') - 3]
-    let ex2 = getline('.')[col('.') - 2]
-    if ex2 =~ "[-=+><>\/\*!]"
-      return "\<ESC>a".a:char
-    endif
-    if ex1 =~ "[-=+><>\/\*!]"
-      if ex2 =~ "\<SPACE>"
-        return "\<ESC>i".a:char."\<ESC>la"
-      else
-        return "\<SPACE>".a:char."\<SPACE>"
-      endif 
+  let la1 = getline('.')[col('.') - 1]
+  if la1 =~ "[=]"
+    return "\<ESC>a".a:char
+  endif
+  if a:char =~ "[/]" && getline('.') =~ "[#]"
+    return a:char
+  endif
+  if a:char =~ "[=]" && getline('.') =~ "[()]"
+    return a:char
+  endif
+  if a:char =~ "[-]" && getline('.') =~ "[\]()]"
+    return a:char
+  endif 
+  let ex1 = getline('.')[col('.') - 3]
+  let ex2 = getline('.')[col('.') - 2]
+  if ex2 =~ "[-=+><>\/\*!]"
+    return "\<ESC>a".a:char
+  endif
+  if ex1 =~ "[-=+><>\/\*!]"
+    if ex2 =~ "\<SPACE>"
+      return "\<ESC>i".a:char."\<ESC>la"
     else
       return "\<SPACE>".a:char."\<SPACE>"
-    endif
+    endif 
+  else
+    return "\<SPACE>".a:char."\<SPACE>"
+  endif
 endfunction
 
-
-" python各种设置
-" tab是4个空格，输入制表符用CTRL-V<Tab>
-autocmd FileType python setlocal expandtab | setlocal shiftwidth=4 |
-	\ setlocal softtabstop=4 | setlocal tabstop=4 | set wrap
-
-" 在输入模式下$c添加注释
+" $c add comment
 au FileType python inoremap <buffer> $c <esc>O#<cr>##<space><cr>#<esc>kA
 
 
@@ -449,92 +419,58 @@ vim.command('map <F9> :w<cr>:!python2 %<cr>')
 vim.command('map <F10> :w<cr>:!python %<cr>')
 EOF
 
-"""""""""""""""""""""""""""""""""
-"           其他设置            "
-"""""""""""""""""""""""""""""""""
-" 保存代码文件前自动修改最后修改时间
-au BufWritePre *.sh
-	\ call TimeStamp('#')
-au BufWritePre .vimrc,*.vim
-	\ call TimeStamp('"')
-au BufWritePre *.c,*.h
-	\ call TimeStamp('*')
-au BufWritePre *.cpp,*.hpp
-	\ call TimeStamp('//')
-au BufWritePre *.cxx,*.hxx
-	\ call TimeStamp('//')
-au BufWritePre *.java
-	\ call TimeStamp('//')
-au BufWritePre *.rb
-	\ call TimeStamp('#')
-au BufWritePre *.py
-	\ call TimeStamp('#')
-au BufWritePre Makefile
-	\ call TimeStamp('#')
-au BufWritePre *.php
-	\ call TimeStamp('<?php //', '?>')
-au BufWritePre *.html,*htm
-	\ call TimeStamp('<!--', '-->')
+""""""""""""""""""""""""""
+" End of python settings "
+""""""""""""""""""""""""""
 
-" Last change用到的函数，返回时间，能够自动调整位置
-function! TimeStamp(...)
-	let sbegin = ''
-	let send = ''
-	if a:0 >= 1
-		let sbegin = a:1.'\s*'
-		if a:1 == '*'
-			let sbegin = '\' . sbegin
-		endif
-	endif
-	if a:0 >= 2
-		let send = ' '.a:2
-	endif
-	let pattern = 'Last Change:.*'
-		\. send
-	let pattern = '^\s*' . sbegin . pattern . '\s*$'
-	let now = strftime('%Y年%m月%d日 %H时%M分%S秒',
-		\localtime())
-	let row = search(pattern, 'n')
-	if row != 0
-		let curstr = getline(row)
-		let col = match( curstr , 'Last')
-		let leftcol = match(curstr,sbegin)
-		let spacestr = repeat(' ',col - len(a:1)-leftcol)
-		let leftspacestr = repeat(' ',leftcol)
-		let now = leftspacestr . a:1 . spacestr . 'Last Change: '
-			\. now . send
-		call setline(row, now)
-	endif
-endfunction
 
-" VimIM
-let g:vimim_map='c-bslash'
-let g:vimim_cloud = 'sogou'
-let g:vimim_mode='static'
-
-" Fortran
-set smarttab
+""""""""""""""""""""
+" Fortran settings "
+""""""""""""""""""""
 let fortran_free_source=1
 let fortran_more_precise=1
 let fortran_do_enddo=1
-"去掉固定格式每行开头的红色填充
 let fortran_have_tabs=1
 let fortran_fold=1
-autocmd FileType fortran set tabstop=2 | set softtabstop=2 | set shiftwidth=2 | setlocal expandtab
-
+let fortran_indent_more=1
 autocmd FileType fortran map <Leader>ll :w<CR>:!gfortran % -o %.out | map <Leader>lv :!./%.out<CR>
 
-autocmd FileType fortran inoremap * <c-r>=EqualChar("*")<CR>
-autocmd FileType fortran inoremap = <c-r>=EqualChar("=")<CR>
-autocmd FileType fortran inoremap + <c-r>=EqualChar("+")<CR>
-autocmd FileType fortran inoremap - <c-r>=EqualChar("-")<CR>
-"autocmd FileType fortran inoremap ! <c-r>=EqualChar("!")<CR>
+autocmd FileType fortran inoremap * <c-r>=FEqualSign("*")<CR>
+autocmd FileType fortran inoremap = <c-r>=FEqualSign("=")<CR>
+autocmd FileType fortran inoremap + <c-r>=FEqualSign("+")<CR>
+autocmd FileType fortran inoremap - <c-r>=FEqualSign("-")<CR>
 autocmd FileType fortran inoremap , <c-r>=Coma()<CR>
-function EqualChar(char)
-  if a:char =~ "*" && getline('.')[col('.') - 2] =~ "("
+autocmd FileType fortran inoremap ! <c-r>=FEqualSign("!")<CR>
+autocmd FileType fortran inoremap 0 <c-r>=Fnum('0')<CR>
+autocmd FileType fortran inoremap 1 <c-r>=Fnum('1')<CR>
+autocmd FileType fortran inoremap 2 <c-r>=Fnum('2')<CR>
+autocmd FileType fortran inoremap 3 <c-r>=Fnum('3')<CR>
+autocmd FileType fortran inoremap 4 <c-r>=Fnum('4')<CR>
+autocmd FileType fortran inoremap 5 <c-r>=Fnum('5')<CR>
+autocmd FileType fortran inoremap 6 <c-r>=Fnum('6')<CR>
+autocmd FileType fortran inoremap 7 <c-r>=Fnum('7')<CR>
+autocmd FileType fortran inoremap 8 <c-r>=Fnum('8')<CR>
+autocmd FileType fortran inoremap 9 <c-r>=Fnum('9')<CR>
+
+" 1-6列输入数字是s模式，输入行标
+function Fnum(num)
+  let colnum = col('.')
+  if colnum == 1
+    return "\<ESC>s".a:num
+  else
+    if colnum <= 6
+      return "\<ESC>ls".a:num
+    else
+      return a:num
+    endif
+  endif
+endfunction
+
+function FEqualSign(char)
+  if a:char == "*" && getline('.')[col('.') - 2] == "("
     return a:char
   else
-    if a:char =~ "*" && getline('.')[col('.') - 3] =~ ","
+    if a:char == "*" && getline('.')[col('.') - 3] == ","
       return a:char
     endif
   endif
@@ -561,6 +497,69 @@ function Coma()
     return ", "
   endif
 endfunction
+
+""""""""""""""""""
+" End of Fortran "
+""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""
+"           其他设置            "
+"""""""""""""""""""""""""""""""""
+" 保存代码文件前自动修改最后修改时间
+au BufWritePre *.sh
+  \ call TimeStamp('#')
+au BufWritePre .vimrc,*.vim
+  \ call TimeStamp('"')
+au BufWritePre *.c,*.h
+  \ call TimeStamp('*')
+au BufWritePre *.cpp,*.hpp
+  \ call TimeStamp('//')
+au BufWritePre *.cxx,*.hxx
+  \ call TimeStamp('//')
+au BufWritePre *.java
+  \ call TimeStamp('//')
+au BufWritePre *.rb
+  \ call TimeStamp('#')
+au BufWritePre *.py
+  \ call TimeStamp('#')
+au BufWritePre Makefile
+  \ call TimeStamp('#')
+au BufWritePre *.php
+  \ call TimeStamp('<?php //', '?>')
+au BufWritePre *.html,*htm
+  \ call TimeStamp('<!--', '-->')
+
+" Last change用到的函数，返回时间，能够自动调整位置
+function! TimeStamp(...)
+  let sbegin = ''
+  let send = ''
+  if a:0 >= 1
+  let sbegin = a:1.'\s*'
+  if a:1 == '*'
+    let sbegin = '\' . sbegin
+  endif
+  endif
+  if a:0 >= 2
+  let send = ' '.a:2
+  endif
+  let pattern = 'Last Change:.*'
+    \. send
+  let pattern = '^\s*' . sbegin . pattern . '\s*$'
+  let now = strftime('%Y年%m月%d日 %H时%M分%S秒',
+    \localtime())
+  let row = search(pattern, 'n')
+  if row != 0
+  let curstr = getline(row)
+  let col = match( curstr , 'Last')
+  let leftcol = match(curstr,sbegin)
+  let spacestr = repeat(' ',col - len(a:1)-leftcol)
+  let leftspacestr = repeat(' ',leftcol)
+  let now = leftspacestr . a:1 . spacestr . 'Last Change: '
+    \. now . send
+  call setline(row, now)
+  endif
+endfunction
+
 
 """""""""""""""""""""""""""""""""
 "              EOF              "
