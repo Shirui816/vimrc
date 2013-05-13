@@ -288,7 +288,7 @@ let g:indent_guides_guide_size = 1
 
 
 " K to translate
-set keywordprg=/home/shirui/Workspace/ydcv/ydcv.py
+set keywordprg=$HOME/Workspace/ydcv/ydcv.py
 
 """"""""""""""""""
 " End of Plugins "
