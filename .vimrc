@@ -307,7 +307,7 @@ set keywordprg=/home/shirui/Workspace/ydcv/ydcv.py
 " Equal sign for python
 
 autocmd FileType python,c inoremap = <c-r>=EqualSign('=')<CR>
-autocmd FileType python,c  inoremap + <c-r>=EqualSign('+')<CR>
+autocmd FileType python,c inoremap + <c-r>=EqualSign('+')<CR>
 autocmd FileType python,c inoremap - <c-r>=EqualSign('-')<CR>
 autocmd FileType python,c inoremap * <c-r>=EqualSign('*')<CR>
 autocmd FileType python,c inoremap < <c-r>=EqualSign('<')<CR>
