@@ -18,6 +18,8 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " Bundle list
+Bundle 'jpalardy/vim-slime'
+Bundle 'vim-scripts/slimv.vim'
 Bundle 'Lokaltog/powerline'
 Bundle 'gmarik/vundle'
 Bundle 'godlygeek/tabular'
@@ -267,6 +269,10 @@ let g:SuperTabDefaultCompletionType="<C-X><C-U>"
 set ofu=syntaxcomplete#Complete
 set completeopt=menu,longest "不在补全的时候显示奇怪的窗口
 
+" Slimv
+"let g:slimv_swank_cmd = '! xterm -e sbcl &'
+let g:slime_target = "tmux"
+let g:slime_paste_file = "$HOME/.slime_paste"
 
 " vim-latexsuite
 set grepprg=grep\ -nH\ $*
@@ -288,7 +294,7 @@ let g:indent_guides_guide_size = 1
 
 
 " K to translate
-set keywordprg=$HOME/Workspace/ydcv/ydcv.py
+set keywordprg=/home/shirui/Workspace/ydcv/ydcv.py
 
 """"""""""""""""""
 " End of Plugins "
@@ -299,23 +305,23 @@ set keywordprg=$HOME/Workspace/ydcv/ydcv.py
 """""""""""""""""""
 
 " Equal sign for python
-autocmd FileType python inoremap = <c-r>=EqualSign('=')<CR>
-autocmd FileType python inoremap + <c-r>=EqualSign('+')<CR>
-autocmd FileType python inoremap - <c-r>=EqualSign('-')<CR>
-autocmd FileType python inoremap * <c-r>=EqualSign('*')<CR>
-autocmd FileType python inoremap < <c-r>=EqualSign('<')<CR>
-autocmd FileType python inoremap > <c-r>=EqualSign('>')<CR>
-autocmd FileType python inoremap : <c-r>=Swap()<CR>
-autocmd FileType python inoremap , ,<SPACE>
-autocmd FileType python inoremap ! <c-r>=EqualSign('!')<CR>
-inoremap ; ;<SPACE>
+
+autocmd FileType python,c inoremap = <c-r>=EqualSign('=')<CR>
+autocmd FileType python,c  inoremap + <c-r>=EqualSign('+')<CR>
+autocmd FileType python,c inoremap - <c-r>=EqualSign('-')<CR>
+autocmd FileType python,c inoremap * <c-r>=EqualSign('*')<CR>
+autocmd FileType python,c inoremap < <c-r>=EqualSign('<')<CR>
+autocmd FileType python,c inoremap > <c-r>=EqualSign('>')<CR>
+autocmd FileType python,c inoremap : <c-r>=Swap()<CR>
+autocmd FileType python,c inoremap , ,<SPACE>
+autocmd FileType python,c inoremap ! <c-r>=EqualSign('!')<CR>
 
 " Swap函数
 " (:)自动():
 " 且当:前是)时不空格，其余情况冒号前一个空格
 " 当一行有[]时间冒号不空格，应对[::]情况
 function! Swap()
-  if getline('.')[col('.') - 1] =~ ")" && getline('.')[col('.') - 2] =~ "("
+  if getline('.')[col('.') - 1] =~ ")"
     return "\<ESC>la:"
   else
     if getline('.')[col('.') - 1] =~ "]"
@@ -336,22 +342,61 @@ endfunction
 " 实现运算符包括+=、*=前后空格
 " a + b情况可以补输入符号比如=
 " a = b情况可以补输入符号如+
+" re.
+"
+function Rep()
+  let re = getline('.')
+  if &filetype == "python"
+    if re =~ "re\..*("
+      return 1
+    else
+      return 0
+    endif
+  elseif &filetype == "sh"
+    if re =~"\".*\""
+      return 1
+    else
+      return 0
+    endif
+  elseif &filetype == "c"
+    if re =~ "\".*\""
+      return 1
+    else
+      return 0
+    endif
+  endif
+endfunction
+
+function Sft()
+  if &filetype == "c" && (getline('.') =~ "#include" || getline('.') =~ "#")
+    return 1
+  elseif &filetype == "python" && (getline('.') =~ "def" || getline('.') =~ "#")
+    return 1
+  else
+    return 0
+  endif
+endfunction
+
+
 function! EqualSign(char)
-  let la1 = getline('.')[col('.') - 1]
+  if Sft()
+    return a:char
+  endif
+  if Rep()
+    return a:char
+  endif
+  let la1 = strpart(getline('.'), col('.') - 1, 1)
   if la1 =~ "[=]"
-    return "\<ESC>a".a:char
-  endif
-  if a:char =~ "[/]" && getline('.') =~ "[#]"
     return a:char
   endif
-  if a:char =~ "[=]" && getline('.') =~ "[()]"
-    return a:char
-  endif
-  if a:char =~ "[-]" && getline('.') =~ "[\]()]"
+  if a:char =~ "-" && (getline('.') =~ "def ()" || getline('.') =~ "[\[\]]")
     return a:char
   endif 
   let ex1 = getline('.')[col('.') - 3]
   let ex2 = getline('.')[col('.') - 2]
+  if ex1 == "=" && a:char != "="
+    return a:char
+  endif
   if ex2 =~ "[-=+><>\/\*!]"
     return "\<ESC>a".a:char
   endif
@@ -434,6 +479,7 @@ let fortran_have_tabs=1
 let fortran_fold=1
 let fortran_indent_more=1
 autocmd FileType fortran map <Leader>ll :w<CR>:!gfortran % -o %.out | map <Leader>lv :!./%.out<CR>
+autocmd FileType c map <Leader>ll :w<CR>:!gcc % -o %.o | map <Leader>lv :!./%.o<CR>
 
 autocmd FileType fortran inoremap * <c-r>=FEqualSign("*")<CR>
 autocmd FileType fortran inoremap = <c-r>=FEqualSign("=")<CR>
@@ -452,7 +498,6 @@ autocmd FileType fortran inoremap 7 <c-r>=Fnum('7')<CR>
 autocmd FileType fortran inoremap 8 <c-r>=Fnum('8')<CR>
 autocmd FileType fortran inoremap 9 <c-r>=Fnum('9')<CR>
 
-" 1-6列输入数字是s模式，输入行标
 function Fnum(num)
   let colnum = col('.')
   if colnum == 1
@@ -467,10 +512,9 @@ function Fnum(num)
 endfunction
 
 function FEqualSign(char)
-  if a:char == "*" && getline('.')[col('.') - 2] == "("
-    return a:char
-  else
-    if a:char == "*" && getline('.')[col('.') - 3] == ","
+  if a:char == "*"
+    let re = getline('.')
+    if getline('.')[col('.') - 2] == "(" || getline('.')[col('.') - 3] == "," || strpart(re, col('.') - 5, 4) =~ "real"
       return a:char
     endif
   endif
