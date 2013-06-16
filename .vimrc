@@ -204,7 +204,7 @@ autocmd FileType python map <F7> :call Flake8()<CR>
 " C-Z quick current buffer
 autocmd FileType python map <C-Z> <ESC>:q<CR>
 " Ignore errors
-let g:flake8_ignore = "E501,E203"
+let g:flake8_ignore = "E501,E203,E251"
 " Shut quickfix
 let g:pyflakes_use_quickfix = 0
 
@@ -315,6 +315,16 @@ autocmd FileType python,c inoremap > <c-r>=EqualSign('>')<CR>
 autocmd FileType python,c inoremap : <c-r>=Swap()<CR>
 autocmd FileType python,c inoremap , ,<SPACE>
 autocmd FileType python,c inoremap ! <c-r>=EqualSign('!')<CR>
+autocmd FileType c inoremap ; <c-r>=F()<CR>
+autocmd FileType python inoremap ; ;<SPACE>
+
+function F()
+  if &filetype == "c" && getline('.') =~ "for ("
+    return "; "
+  else
+    return ";"
+  endif
+endfunction
 
 " Swap函数
 " (:)自动():
@@ -336,53 +346,24 @@ function! Swap()
   endif
 endfunction
 
-
 " EqualSign函数
 " 当一行有[]时-不空格，应对[-1]情况
 " 实现运算符包括+=、*=前后空格
 " a + b情况可以补输入符号比如=
 " a = b情况可以补输入符号如+
-" re.
-"
-function Rep()
-  let re = getline('.')
-  if &filetype == "python"
-    if re =~ "re\..*("
-      return 1
-    else
-      return 0
-    endif
-  elseif &filetype == "sh"
-    if re =~"\".*\""
-      return 1
-    else
-      return 0
-    endif
-  elseif &filetype == "c"
-    if re =~ "\".*\""
-      return 1
-    else
-      return 0
-    endif
-  endif
-endfunction
 
 function Sft()
-  if &filetype == "c" && (getline('.') =~ "#include" || getline('.') =~ "#")
+  if &filetype == "c" && (getline('.') =~ "#include" || getline('.') =~ "#" || getline('.') =~ "\".*\"" || getline('.') =~ "putchar(.*" || getline('.') =~ "FILE")
     return 1
-  elseif &filetype == "python" && (getline('.') =~ "def" || getline('.') =~ "#")
+  elseif &filetype == "python" && (getline('.') =~ "#" || strpart(getline('.'),col('.') - 1) =~ "\"" || getline('.') =~ "re\..*(")
     return 1
   else
     return 0
   endif
 endfunction
 
-
 function! EqualSign(char)
   if Sft()
-    return a:char
-  endif
-  if Rep()
     return a:char
   endif
   let la1 = strpart(getline('.'), col('.') - 1, 1)
@@ -394,6 +375,13 @@ function! EqualSign(char)
   endif 
   let ex1 = getline('.')[col('.') - 3]
   let ex2 = getline('.')[col('.') - 2]
+  if ex1 =~ "[+-]" && a:char =~ "[+-]"
+    if strpart(getline('.'), col('.') - 3, 3) =~ "++" || strpart(getline('.'), col('.') - 3, 3) =~ "--"
+      return a:char
+    else
+      return "\<ESC>hhs".a:char."\<ESC>lls"
+    endif
+  endif
   if ex1 == "=" && a:char != "="
     return a:char
   endif
