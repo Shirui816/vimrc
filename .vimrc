@@ -251,7 +251,24 @@ let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_min_syntax_length = 3
 let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 " Shut autostart
-let g:neocomplcache_disable_auto_complete = 1
+let g:neocomplcache_disable_auto_complete = 0
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return neocomplcache#smart_close_popup() . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplcache#close_popup()
+inoremap <expr><C-e>  neocomplcache#cancel_popup()
+" Close popup by <Space>.
+inoremap <expr><Space> pumvisible() ? neocomplcache#close_popup() : "\<Space>"
 
 
 " omnicomplete
@@ -264,8 +281,8 @@ autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType c set omnifunc=ccomplete#Complete
 
 " Supertab
-let g:SuperTabRetainCompletionType=2
-let g:SuperTabDefaultCompletionType="<C-X><C-U>"
+" let g:SuperTabRetainCompletionType=2
+" let g:SuperTabDefaultCompletionType="<C-X><C-P>"
 set ofu=syntaxcomplete#Complete
 set completeopt=menu,longest "不在补全的时候显示奇怪的窗口
 
@@ -294,7 +311,7 @@ let g:indent_guides_guide_size = 1
 
 
 " K to translate
-set keywordprg=$HOME/Workspace/ydcv/ydcv.py
+set keywordprg=/home/shirui/Workspace/ydcv/ydcv.py
 
 """"""""""""""""""
 " End of Plugins "
@@ -353,7 +370,7 @@ endfunction
 " a = b情况可以补输入符号如+
 
 function Sft()
-  if &filetype == "c" && (getline('.') =~ "#include" || getline('.') =~ "#" || getline('.') =~ "\".*\"" || getline('.') =~ "putchar(.*" || getline('.') =~ "FILE")
+  if &filetype == "c" && (getline('.') =~ "#include" || getline('.') =~ "#" || getline('.') =~ "\".*\"" || getline('.') =~ "putchar(.*" || getline('.') =~ "FILE" || getline('.') =~ "#include")
     return 1
   elseif &filetype == "python" && (getline('.') =~ "#" || strpart(getline('.'),col('.') - 1) =~ "\"" || getline('.') =~ "re\..*(")
     return 1
@@ -591,6 +608,44 @@ function! TimeStamp(...)
   call setline(row, now)
   endif
 endfunction
+
+""""""""""""""
+"新建.c,.h,.sh,.java文件，自动插入文件头 
+autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java exec ":call SetTitle()" 
+""定义函数SetTitle，自动插入文件头 
+function SetTitle() 
+  "如果文件类型为.sh文件 
+  if &filetype == 'sh' 
+    call setline(1,"\#########################################################################") 
+    call append(line("."), "\# File Name: ".expand("%")) 
+    call append(line(".")+1, "\# Author: Shirui") 
+    call append(line(".")+2, "\# mail: shirui816@gmail.com") 
+    call append(line(".")+3, "\# Created Time: ".strftime("%c")) 
+    call append(line(".")+4, "\#########################################################################") 
+    call append(line(".")+5, "\#!/bin/bash") 
+    call append(line(".")+6, "") 
+   else 
+    call setline(1, "/*************************************************************************") 
+    call append(line("."), "    > File Name: ".expand("%")) 
+    call append(line(".")+1, "    > Author: Shirui") 
+    call append(line(".")+2, "    > Mail: shirui816@gmail.com") 
+    call append(line(".")+3, "    > Created Time: ".strftime("%c")) 
+    call append(line(".")+4, " ************************************************************************/") 
+    call append(line(".")+5, "")
+  endif
+  if &filetype == 'cpp'
+    call append(line(".")+6, "#include<iostream>")
+    call append(line(".")+7, "using namespace std;")
+    call append(line(".")+8, "")
+  endif
+  if &filetype == 'c'
+    call append(line(".")+6, "#include<stdio.h>")
+    call append(line(".")+7, "")
+  endif
+  "新建文件后，自动定位到文件末尾
+  autocmd BufNewFile * normal G
+endfunction
+
 
 
 """""""""""""""""""""""""""""""""
