@@ -36,6 +36,8 @@ Bundle 'matchit.zip'
 Bundle 'Wombat'
 Bundle 'SearchComplete'
 Bundle 'Shougo/neocomplcache.vim'
+Bundle 'jdevera/vim-cs-explorer'
+Bundle 'tpope/vim-vividchalk'
 
 " Installing plugins the first time
 if iCanHazVundle == 0
@@ -56,8 +58,7 @@ if has("gui_running")
   set guioptions-=T
   colorscheme wombat
 else
-  set background=dark
-  colorscheme zellner
+  colorscheme vividchalk
 endif
 
 " navigate windows with meta+arrows
