@@ -12,12 +12,11 @@ endif
 set shell=/bin/bash
 " Other shells like fish may report an error.
 
-filetype off
-
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " Bundle list
+Bundle 'ervandew/supertab'
 Bundle 'jpalardy/vim-slime'
 Bundle 'vim-scripts/slimv.vim'
 Bundle 'Lokaltog/powerline'
@@ -29,7 +28,6 @@ Bundle 'majutsushi/tagbar'
 Bundle 'kien/ctrlp.vim'
 Bundle 'fisadev/fisa-vim-colorscheme'
 Bundle 'fisadev/FixedTaskList.vim'
-Bundle 'Shougo/neocomplcache'
 Bundle 'LaTeX-Box-Team/LaTeX-Box'
 Bundle 'nvie/vim-flake8'
 Bundle 'pyflakes.vim'
@@ -37,6 +35,7 @@ Bundle 'IndexedSearch'
 Bundle 'matchit.zip'
 Bundle 'Wombat'
 Bundle 'SearchComplete'
+Bundle 'Shougo/neocomplcache.vim'
 
 " Installing plugins the first time
 if iCanHazVundle == 0
@@ -149,7 +148,6 @@ endfunction
 """""""""""""""""""""""""""""""""
 " vim-latexsuite                "
 " vim-neocomplcache             "
-" vim-supertab                  "
 " vim-latex-box                 "
 " vim-tagbar                    "
 " vim-ctrlp                     "
@@ -234,57 +232,35 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\.pyc$\|\.pyo$',
 \ }
 
-""""""""""""""""""""""""""
-" Neocomplcache settings "
-""""""""""""""""""""""""""
+" SuperTab
+let g:SuperTabDefaultCompletionType = "<c-x><c-u>"
+
+" Neocomplcache
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplcache.
 let g:neocomplcache_enable_at_startup = 1
 " Use smartcase.
 let g:neocomplcache_enable_smart_case = 1
-" Use camel case completion.
-let g:neocomplcache_enable_camel_case_completion = 1
-" Use underbar completion.
-let g:neocomplcache_enable_underbar_completion = 1
 " Set minimum syntax keyword length.
 let g:neocomplcache_min_syntax_length = 3
 let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
-" Shut autostart
-let g:neocomplcache_disable_auto_complete = 0
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return neocomplcache#smart_close_popup() . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplcache#close_popup()
-inoremap <expr><C-e>  neocomplcache#cancel_popup()
-" Close popup by <Space>.
-inoremap <expr><Space> pumvisible() ? neocomplcache#close_popup() : "\<Space>"
+
+" Shell like behavior(not recommended).
+set completeopt+=longest
+let g:neocomplcache_enable_auto_select = 1
+let g:neocomplcache_disable_auto_complete = 1
+"inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 
 
-" omnicomplete
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-autocmd FileType c set omnifunc=ccomplete#Complete
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-" Supertab
-" let g:SuperTabRetainCompletionType=2
-" let g:SuperTabDefaultCompletionType="<C-X><C-P>"
-set ofu=syntaxcomplete#Complete
-set completeopt=menu,longest "不在补全的时候显示奇怪的窗口
 
 " Slimv
 "let g:slimv_swank_cmd = '! xterm -e sbcl &'
