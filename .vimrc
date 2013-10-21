@@ -16,6 +16,7 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " Bundle list
+Bundle 'Markdown'
 Bundle 'ervandew/supertab'
 Bundle 'jpalardy/vim-slime'
 Bundle 'vim-scripts/slimv.vim'
@@ -83,7 +84,7 @@ set ls=2
 set encoding=utf-8
 set fileencodings=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936,iso-8859-6
 set ambiwidth=double
-set guifont=Terminus\ for\ Powerline\ Medium\ 16
+set guifont=Terminus\ (TTF)\ for\ Powerline\ Medium\ 16
 
 " Cursor jumps to the last place while openning file
 autocmd BufReadPost *
@@ -106,6 +107,7 @@ set ignorecase
 nmap <silent> <leader><cr> :noh<cr>
 
 set number " Show line number
+set autochdir
 set expandtab
 set tabstop=4
 set softtabstop=4
@@ -116,6 +118,26 @@ set matchtime=2 " Time above
 set smarttab
 filetype plugin on
 filetype indent on
+
+augroup filetypedetect
+  au! BufRead,BufNewFile *.m,*.oct set filetype=octave
+augroup END
+if has("autocmd") && exists("+omnifunc")
+   autocmd Filetype octave
+   \ if &omnifunc == "" |
+   \ setlocal omnifunc=syntaxcomplete#Complete |
+   \ endif
+endif
+
+augroup filetypedetect
+  au! BufRead,BufNewFile *.sage,*.spyx,*.pyx setfiletype python
+augroup END
+
+autocmd BufRead,BufNewFile *.sage,*.pyx,*.spyx set filetype=python
+autocmd Filetype python set tabstop=4|set shiftwidth=4|set expandtab
+autocmd FileType python set makeprg=sage\ -b\ &&\ sage\ -t\ %
+
+
 
 " foldmethod and F5(F6) to fold(unfold) code
 set foldmethod=indent
@@ -251,7 +273,7 @@ let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 set completeopt+=longest
 let g:neocomplcache_enable_auto_select = 1
 let g:neocomplcache_disable_auto_complete = 1
-"inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
 "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 
 
@@ -290,6 +312,10 @@ let g:indent_guides_guide_size = 1
 " K to translate
 set keywordprg=$HOME/Workspace/ydcv/ydcv.py
 
+" Multiple
+"
+
+
 """"""""""""""""""
 " End of Plugins "
 """"""""""""""""""
@@ -300,15 +326,15 @@ set keywordprg=$HOME/Workspace/ydcv/ydcv.py
 
 " Equal sign for python
 
-autocmd FileType python,c inoremap = <c-r>=EqualSign('=')<CR>
-autocmd FileType python,c inoremap + <c-r>=EqualSign('+')<CR>
-autocmd FileType python,c inoremap - <c-r>=EqualSign('-')<CR>
-autocmd FileType python,c inoremap * <c-r>=EqualSign('*')<CR>
-autocmd FileType python,c inoremap < <c-r>=EqualSign('<')<CR>
-autocmd FileType python,c inoremap > <c-r>=EqualSign('>')<CR>
-autocmd FileType python,c inoremap : <c-r>=Swap()<CR>
-autocmd FileType python,c inoremap , ,<SPACE>
-autocmd FileType python,c inoremap ! <c-r>=EqualSign('!')<CR>
+autocmd FileType python,c,octave inoremap = <c-r>=EqualSign('=')<CR>
+autocmd FileType python,c,octave inoremap + <c-r>=EqualSign('+')<CR>
+autocmd FileType python,c,octave inoremap - <c-r>=EqualSign('-')<CR>
+autocmd FileType python,c,octave inoremap * <c-r>=EqualSign('*')<CR>
+autocmd FileType python,c,octave inoremap < <c-r>=EqualSign('<')<CR>
+autocmd FileType python,c,octave inoremap > <c-r>=EqualSign('>')<CR>
+autocmd FileType python,c,octave inoremap : <c-r>=Swap()<CR>
+autocmd FileType python,c,octave inoremap , ,<SPACE>
+autocmd FileType python,c,octave inoremap ! <c-r>=EqualSign('!')<CR>
 autocmd FileType c inoremap ; <c-r>=F()<CR>
 autocmd FileType python inoremap ; ;<SPACE>
 
@@ -468,7 +494,7 @@ autocmd FileType fortran inoremap = <c-r>=FEqualSign("=")<CR>
 autocmd FileType fortran inoremap + <c-r>=FEqualSign("+")<CR>
 autocmd FileType fortran inoremap - <c-r>=FEqualSign("-")<CR>
 autocmd FileType fortran inoremap , <c-r>=Coma()<CR>
-autocmd FileType fortran inoremap ! <c-r>=FEqualSign("!")<CR>
+autocmd FileType fortran inoremap ! <c-r>=Fnum("!")<CR>
 autocmd FileType fortran inoremap 0 <c-r>=Fnum('0')<CR>
 autocmd FileType fortran inoremap 1 <c-r>=Fnum('1')<CR>
 autocmd FileType fortran inoremap 2 <c-r>=Fnum('2')<CR>
@@ -479,9 +505,15 @@ autocmd FileType fortran inoremap 6 <c-r>=Fnum('6')<CR>
 autocmd FileType fortran inoremap 7 <c-r>=Fnum('7')<CR>
 autocmd FileType fortran inoremap 8 <c-r>=Fnum('8')<CR>
 autocmd FileType fortran inoremap 9 <c-r>=Fnum('9')<CR>
+autocmd FileType fortran inoremap / <c-r>=FEqualSign('/')<CR>
 
 function Fnum(num)
   let colnum = col('.')
+  let ex1 = getline('.')[col('.') - 4]
+  let ex2 = getline('.')[col('.') - 3]
+  if ex2 =~ "[-+]" && ex1 =~ "[+=(\/\*,]"
+    return "\<ESC>hi"."\<space>"."\<ESC>lls".a:num
+  endif
   if colnum == 1
     return "\<ESC>s".a:num
   else
@@ -496,7 +528,12 @@ endfunction
 function FEqualSign(char)
   if a:char == "*"
     let re = getline('.')
-    if getline('.')[col('.') - 2] == "(" || getline('.')[col('.') - 3] == "," || strpart(re, col('.') - 5, 4) =~ "real"
+    if getline('.')[col('.') - 2] == "(" || getline('.')[col('.') - 3] == "," || strpart(re, col('.') - 5, 4) =~ "real" || strpart(re, col('.') - 6, 5) =~ "print"
+      return a:char
+    endif
+  endif
+  if a:char =~ "[+-]"
+    if strpart(getline('.'), col('.') - 3, 2) =~ "[0-9][eE]"
       return a:char
     endif
   endif
@@ -517,7 +554,7 @@ function FEqualSign(char)
 endfunction
 
 function Coma()
-  if getline('.')[col('.') - 3] =~ "*"
+  if getline('.')[col('.') - 3] =~ "*" && getline('.')[col('.') - 2] =~ '\s'
     return "\<ESC>i,\<ESC>la"
   else
     return ", "
