@@ -107,7 +107,7 @@ set ignorecase
 nmap <silent> <leader><cr> :noh<cr>
 
 set number " Show line number
-set autochdir
+set autochdir " auto change working directory
 set expandtab
 set tabstop=4
 set softtabstop=4
@@ -145,14 +145,28 @@ autocmd FileType fortran set foldmethod=syntax
 map <F5> zR
 map <F6> zM
 
-" close pair
-:inoremap ( ()<ESC>i
-:inoremap ) <c-r>=ClosePair(')')<CR>
-:inoremap { {}<ESC>i
-:inoremap } <c-r>=ClosePair('}')<CR>
-:inoremap [ []<ESC>i
-:inoremap ] <c-r>=ClosePair(']')<CR>
-:inoremap " ""<ESC>i
+" close pair function
+
+function! Pair(char)
+  if getline('.')[col('.')] == ""
+    if a:char == "("
+      return "()"."\<ESC>i"
+    elseif a:char == "["
+      return "[]"."\<ESC>i"
+    elseif a:char == "{"
+      return "{}"."\<ESC>i"
+    endif
+  else
+    return a:char
+  endif
+endfunction
+
+inoremap ( <c-r>=Pair('(')<CR>
+inoremap ) <c-r>=ClosePair(')')<CR>
+inoremap [ <c-r>=Pair('[')<CR>
+inoremap ] <c-r>=ClosePair(']')<CR>
+inoremap { <c-r>=Pair('{')<CR>
+inoremap } <c-r>=ClosePair('}')<CR>
 
 function! ClosePair(char)
   if getline('.')[col('.') - 1] == a:char
@@ -395,11 +409,16 @@ function! EqualSign(char)
   endif 
   let ex1 = getline('.')[col('.') - 3]
   let ex2 = getline('.')[col('.') - 2]
-  if ex1 =~ "[+-]" && a:char =~ "[+-]"
+  if ex1 =~ "+" && a:char =~ "+" || ex1 =~ "-" && a:char =~ "-"
     if strpart(getline('.'), col('.') - 3, 3) =~ "++" || strpart(getline('.'), col('.') - 3, 3) =~ "--"
       return a:char
     else
       return "\<ESC>hhs".a:char."\<ESC>lls"
+    endif
+  endif
+  if a:char =~ "[+-]"
+    if strpart(getline('.'), col('.') - 3, 2) =~ "[0-9][eE]" || getline('.')[col('.') - 3] =~ "[+-=\*\/,;:]" || getline('.')[col('.') - 2] =~ "[(\[]"
+      return a:char
     endif
   endif
   if ex1 == "=" && a:char != "="
@@ -509,11 +528,11 @@ autocmd FileType fortran inoremap / <c-r>=FEqualSign('/')<CR>
 
 function Fnum(num)
   let colnum = col('.')
-  let ex1 = getline('.')[col('.') - 4]
-  let ex2 = getline('.')[col('.') - 3]
-  if ex2 =~ "[-+]" && ex1 =~ "[+=(\/\*,]"
-    return "\<ESC>hi"."\<space>"."\<ESC>lls".a:num
-  endif
+""  let ex1 = getline('.')[col('.') - 4]
+""  let ex2 = getline('.')[col('.') - 3]
+""  if ex2 =~ "[-+]" && ex1 =~ "[+=(\/\*,]"
+""    return "\<ESC>hi"."\<space>"."\<ESC>lls".a:num
+""  endif
   if colnum == 1
     return "\<ESC>s".a:num
   else
@@ -533,7 +552,7 @@ function FEqualSign(char)
     endif
   endif
   if a:char =~ "[+-]"
-    if strpart(getline('.'), col('.') - 3, 2) =~ "[0-9][eE]"
+    if strpart(getline('.'), col('.') - 3, 2) =~ "[0-9][eE]" || getline('.')[col('.') - 3] =~ "[+-=\*\/,;:]" || getline('.')[col('.') - 2] =~ "[(\[]"
       return a:char
     endif
   endif
