@@ -17,6 +17,7 @@ call vundle#rc()
 
 " Bundle list
 Bundle 'Markdown'
+Bundle 'cscope.vim'
 Bundle 'SuperTab'
 Bundle 'jpalardy/vim-slime'
 Bundle 'vim-scripts/slimv.vim'
@@ -131,7 +132,7 @@ if has("autocmd") && exists("+omnifunc")
 endif
 
 augroup filetypedetect
-  au! BufRead,BufNewFile *.sage,*.spyx,*.pyx setfiletype python
+  au! BufRead,BufNewFile *.sage,*.spyx,*.pyx, setfiletype python
 augroup END
 
 autocmd BufRead,BufNewFile *.sage,*.pyx,*.spyx set filetype=python
@@ -721,6 +722,43 @@ function SetTitle()
   "新建文件后，自动定位到文件末尾
   autocmd BufNewFile * normal G
 endfunction
+
+""""""""""""""
+" C settings "
+""""""""""""""
+" Cscope plugin
+"
+" Use both cscope and ctag  
+set cscopetag  
+  
+" Show msg when cscope db added  
+set cscopeverbose  
+  
+" Use tags for definition search first  
+set cscopetagorder=1  
+  
+" Use quickfix window to show cscope results  
+" set cscopequickfix=s-,c-,d-,i-,t-,e- 
+
+"autocmd FileType c,cpp nmap <C-]>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+"autocmd FileType c,cpp nmap <C-]>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+"autocmd FileType c,cpp nmap <C-]>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+"autocmd FileType c,cpp nmap <C-]>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+"autocmd FileType c,cpp nmap <C-]>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+"autocmd FileType c,cpp nmap <C-]>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
+"autocmd FileType c,cpp nmap <C-]>i :vert scs find i <C-R>=expand("<cfile>")<CR><CR>
+"autocmd FileType c,cpp nmap <C-]>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+
+"
+" s -- 查找 C 符号
+" g -- 查找定义
+" d -- 查找被这个函数调用的函数（们）
+" c -- 查找调用这个函数的函数（们）
+" t -- 查找这个字符串
+" e -- egrep查找
+" f -- 查找这个文件
+" i -- 查找#include这个文件的文件（们）
+"
 
 
 
