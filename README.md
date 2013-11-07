@@ -10,7 +10,7 @@ Bundle 'vim-scripts/SuperTab'
 
 **我稍微修改了一下它的打开方式。**
 
-** *\<leader\>f\<mode, such as g, i, s.......\>* to find file(s), *:cscopegen \<root path of project\>* to create cs link, *:cscopegen* to update.**
+*\<leader\>f\<mode, such as g, i, s.......\>* **to find file(s),** *:cscopegen \<root path of project\>* **to create cs link,** *:cscopegen* **to update.**
 
 
 
