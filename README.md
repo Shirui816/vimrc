@@ -6,9 +6,11 @@ Bundle 'vim-scripts/LaTeX-Suite-aka-Vim-LaTeX'
 Bundle 'vim-scripts/SuperTab'
 ```
 
-*cscope.vim用法：*    
-*我稍微修改了一下它的打开方式。*    
-*\<leader\>f\<mode, such as g, i, s.......\> to find file(s), :cscopegen \<root path of project\> to create cs link, :cscopegen to update.*
+**cscope.vim用法：**
+
+**我稍微修改了一下它的打开方式。**
+
+** *\<leader\>f\<mode, such as g, i, s.......\>* to find file(s), *:cscopegen \<root path of project\>* to create cs link, *:cscopegen* to update.**
 
 
 
