@@ -6,7 +6,7 @@ Bundle 'vim-scripts/LaTeX-Suite-aka-Vim-LaTeX'
 Bundle 'vim-scripts/SuperTab'
 ```
 
-*cscope.vim用法：我稍微修改了一下它的打开方式。*
+*cscope.vim用法：我稍微修改了一下它的打开方式。*    
 *<leader>f<mode, such as g, i, s.......> to find file(s), :cscopegen <root path of project> to create cs link, :cscopegen to update.*
 
 
@@ -30,6 +30,7 @@ Ctags关于LaTeX的设置
 --------------------
 把下面东西加入到~/.ctags   
 
+```sh
 --langdef=latex   
 --langmap=latex:.tex   
 --regex-latex=/^\\tableofcontents/TABLE OF CONTENTS/s,toc/   
@@ -52,6 +53,7 @@ Ctags关于LaTeX的设置
 --regex-latex=/\\label[[:space:]]*\{([^}]+)\}/\1/l,label/   
 --regex-latex=/\\ref[[:space:]]*\{([^}]+)\}/\1/r,ref/   
 --regex-latex=/\\pageref[[:space:]]*\{([^}]+)\}/\1/p,pageref/
+```
 
 Patcher用法
 -----------
