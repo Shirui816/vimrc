@@ -738,16 +738,7 @@ set cscopeverbose
 set cscopetagorder=1  
   
 " Use quickfix window to show cscope results  
-" set cscopequickfix=s-,c-,d-,i-,t-,e- 
-
-"autocmd FileType c,cpp nmap <C-]>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
-"autocmd FileType c,cpp nmap <C-]>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
-"autocmd FileType c,cpp nmap <C-]>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
-"autocmd FileType c,cpp nmap <C-]>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
-"autocmd FileType c,cpp nmap <C-]>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
-"autocmd FileType c,cpp nmap <C-]>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
-"autocmd FileType c,cpp nmap <C-]>i :vert scs find i <C-R>=expand("<cfile>")<CR><CR>
-"autocmd FileType c,cpp nmap <C-]>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+" set cscopequickfix=s-,c-,d-,i-,t-,e-
 
 "
 " s -- 查找 C 符号
