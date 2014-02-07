@@ -16,12 +16,15 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " Bundle list
+Bundle 'altercation/vim-colors-solarized'
+"Bundle 'flazz/vim-colorschemes'
 Bundle 'Markdown'
 Bundle 'cscope.vim'
 Bundle 'SuperTab'
-Bundle 'jpalardy/vim-slime'
-Bundle 'vim-scripts/slimv.vim'
-Bundle 'Lokaltog/powerline'
+"Bundle 'jpalardy/vim-slime'
+"Bundle 'vim-scripts/slimv.vim'
+Bundle 'bling/vim-airline'
+"Bundle 'Lokaltog/powerline'
 Bundle 'gmarik/vundle'
 Bundle 'godlygeek/tabular'
 Bundle 'terryma/vim-multiple-cursors'
@@ -29,7 +32,7 @@ Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'majutsushi/tagbar'
 Bundle 'kien/ctrlp.vim'
 Bundle 'fisadev/fisa-vim-colorscheme'
-Bundle 'fisadev/FixedTaskList.vim'
+"Bundle 'fisadev/FixedTaskList.vim'
 Bundle 'LaTeX-Box-Team/LaTeX-Box'
 Bundle 'nvie/vim-flake8'
 Bundle 'pyflakes.vim'
@@ -40,7 +43,7 @@ Bundle 'SearchComplete'
 Bundle 'Shougo/neocomplcache.vim'
 Bundle 'jdevera/vim-cs-explorer'
 Bundle 'tpope/vim-vividchalk'
-Bundle "daylerees/colour-schemes", { "rtp": "vim-themes/" }
+Bundle 'daylerees/colour-schemes', { 'rtp': 'vim-themes/' }
 
 " Installing plugins the first time
 if iCanHazVundle == 0
@@ -53,15 +56,18 @@ endif
 """""""""""""""""""""""""""""""""
 "           General             "
 """""""""""""""""""""""""""""""""
-set langmenu=zh_CN
+set langmenu=en_US
 set wrap
 set nocp
 syntax on
+syntax enable
+set background=dark
+colorscheme solarized
 if has("gui_running")
   set guioptions-=T
-  colorscheme Yule
-else
-  colorscheme Yule
+"  set background=dark
+"else
+"  set background=dark
 endif
 
 " navigate windows with meta+arrows
@@ -86,7 +92,7 @@ set ls=2
 set encoding=utf-8
 set fileencodings=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936,iso-8859-6
 set ambiwidth=double
-set guifont=Terminus\ (TTF)\ for\ Powerline\ Medium\ 16
+set guifont=Terminus\ Medium\ 17
 
 " Cursor jumps to the last place while openning file
 autocmd BufReadPost *
@@ -95,10 +101,10 @@ autocmd BufReadPost *
   \ endif
 
 " Reverse color of current cursor
-if has("gui_running")
-  set cursorline
-  hi cursorline guibg=#333333
-endif
+"if has("gui_running")
+"  set cursorline
+"  hi cursorline guibg=#333333
+"endif
 
 let mapleader=','
 
@@ -120,7 +126,6 @@ set matchtime=2 " Time above
 set smarttab
 filetype plugin on
 filetype indent on
-
 augroup filetypedetect
   au! BufRead,BufNewFile *.m,*.oct set filetype=octave
 augroup END
@@ -194,11 +199,27 @@ endfunction
 " vim-indent-guide              "
 """""""""""""""""""""""""""""""""
 
-" Powerline
-set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
-let g:Powerline_symbols="fancy"
+"vim-airline
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
 set laststatus=2
-set noshowmode
+"set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+"let g:Powerline_symbols='fancy'
+"let g:Powerline_colorscheme="solarized"
+let g:airline_powerline_fonts=1
+let g:airline_enable_branch=1
+let g:airline_theme="solarized"
+let g:airline_enable_syntastic=1
+let g:airline_detect_paste=1
+" powerline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
 
 " Former Error
 map <F3> :cn<Enter>
@@ -229,14 +250,6 @@ let g:tagbar_type_tex = {
 """""""""""""""""
 " End of tagbar "
 """""""""""""""""
-
-
-
-
-
-
-
-
 
 """"""""""""""""""""""
 " flake8             "
@@ -368,7 +381,7 @@ let g:indent_guides_guide_size = 1
 
 
 " K to translate
-set keywordprg=$HOME/Workspace/ydcv/ydcv.py
+set keywordprg=ydcv
 
 " Multiple
 "
@@ -384,17 +397,26 @@ set keywordprg=$HOME/Workspace/ydcv/ydcv.py
 
 " Equal sign for python
 
-autocmd FileType python,c,octave inoremap = <c-r>=EqualSign('=')<CR>
-autocmd FileType python,c,octave inoremap + <c-r>=EqualSign('+')<CR>
-autocmd FileType python,c,octave inoremap - <c-r>=EqualSign('-')<CR>
-autocmd FileType python,c,octave inoremap * <c-r>=EqualSign('*')<CR>
-autocmd FileType python,c,octave inoremap < <c-r>=EqualSign('<')<CR>
-autocmd FileType python,c,octave inoremap > <c-r>=EqualSign('>')<CR>
-autocmd FileType python,c,octave inoremap : <c-r>=Swap()<CR>
-autocmd FileType python,c,octave inoremap , ,<SPACE>
-autocmd FileType python,c,octave inoremap ! <c-r>=EqualSign('!')<CR>
+autocmd FileType python,c inoremap = <c-r>=EqualSign('=')<CR>
+autocmd FileType python,c inoremap + <c-r>=EqualSign('+')<CR>
+autocmd FileType python,c inoremap - <c-r>=EqualSign('-')<CR>
+autocmd FileType python,c inoremap * <c-r>=EqualSign('*')<CR>
+autocmd FileType python,c inoremap < <c-r>=EqualSign('<')<CR>
+autocmd FileType python,c inoremap > <c-r>=EqualSign('>')<CR>
+autocmd FileType python,c inoremap : <c-r>=Swap()<CR>
+autocmd FileType python,c inoremap , ,<SPACE>
+autocmd FileType python,c inoremap ! <c-r>=EqualSign('!')<CR>
 autocmd FileType c inoremap ; <c-r>=F()<CR>
+autocmd FileType c inoremap <CR> <c-r>=Ent()<CR>
 autocmd FileType python inoremap ; ;<SPACE>
+
+function Ent()
+  if getline('.')[col('.')-1] =~ "}" && getline('.')[col('.') - 2] =~ "{"
+    return "\<CR>\<UP>\<End>\<CR>"
+  else
+    return "\<CR>"
+  endif
+endfunction
 
 function F()
   if &filetype == "c" && getline('.') =~ "for ("
@@ -461,7 +483,7 @@ function! EqualSign(char)
     endif
   endif
   if a:char =~ "[+-]"
-    if strpart(getline('.'), col('.') - 3, 2) =~ "[0-9][eE]" || getline('.')[col('.') - 3] =~ "[+-=\*\/,;:]" || getline('.')[col('.') - 2] =~ "[(\[]"
+    if strpart(getline('.'), col('.') - 3, 2) =~ "[\d][eE]" || getline('.')[col('.') - 3] =~ "[+-=\*\/,;:]" || getline('.')[col('.') - 2] =~ "[(\[]"
       return a:char
     endif
   endif
@@ -543,14 +565,16 @@ EOF
 """"""""""""""""""""
 " Fortran settings "
 """"""""""""""""""""
+
 let fortran_free_source=1
 let fortran_more_precise=1
 let fortran_do_enddo=1
 let fortran_have_tabs=1
 let fortran_fold=1
 let fortran_indent_more=1
-autocmd FileType fortran map <Leader>ll :w<CR>:!gfortran % -o %.out | map <Leader>lv :!./%.out<CR>
-autocmd FileType c map <Leader>ll :w<CR>:!gcc % -o %.o | map <Leader>lv :!./%.o<CR>
+autocmd FileType fortran set fdm=syntax
+autocmd FileType fortran map <Leader>ll :w<CR>:!gfortran -g % -o %.o | map <Leader>lv :!./%.o<CR>
+autocmd FileType c map <Leader>ll :w<CR>:!gcc -g % -o %.o | map <Leader>lv :!./%.o<CR>
 
 autocmd FileType fortran inoremap * <c-r>=FEqualSign("*")<CR>
 autocmd FileType fortran inoremap = <c-r>=FEqualSign("=")<CR>
@@ -738,7 +762,16 @@ set cscopeverbose
 set cscopetagorder=1  
   
 " Use quickfix window to show cscope results  
-" set cscopequickfix=s-,c-,d-,i-,t-,e-
+" set cscopequickfix=s-,c-,d-,i-,t-,e- 
+
+"autocmd FileType c,cpp nmap <C-]>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+"autocmd FileType c,cpp nmap <C-]>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+"autocmd FileType c,cpp nmap <C-]>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+"autocmd FileType c,cpp nmap <C-]>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+"autocmd FileType c,cpp nmap <C-]>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+"autocmd FileType c,cpp nmap <C-]>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
+"autocmd FileType c,cpp nmap <C-]>i :vert scs find i <C-R>=expand("<cfile>")<CR><CR>
+"autocmd FileType c,cpp nmap <C-]>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
 
 "
 " s -- 查找 C 符号
